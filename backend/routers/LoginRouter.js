@@ -1,6 +1,5 @@
 const express= require("express");
 const LoginRouter = express.Router();
-const verifiedotp = require("../middlewares/verifyotp")
 const { loginuser } = require("../controllers/Authentication/loginuser");
 const {forgetpassword,verifyotp,resetPassword} = require("../controllers/Authentication/forgetpassword")
 require("dotenv").config();
@@ -18,7 +17,7 @@ LoginRouter.get("/forget-password",(req,res)=>{
 });
 LoginRouter.post("/forget-password", forgetpassword);
 LoginRouter.post("/verify-otp",verifyotp);
-LoginRouter.post("/reset-password",verifiedotp,resetPassword);
+LoginRouter.post("/reset-password",resetPassword);
 LoginRouter.post("/logout", (req, res) => {
   res.clearCookie("authToken");
   res.send("Logged out successfully");

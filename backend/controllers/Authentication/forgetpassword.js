@@ -1,24 +1,37 @@
 const bcrypt = require("bcrypt");
 const pool = require("../../config/db")
-const { findUserByEmail,saveOtp } = require("../../models/UserModel");
-const {sendotpEmail} = require("../../utils/sendEmail")
+const { findUserByEmail} = require("../../models/UserModel");
+const {fgpass} = require("../../utils/forgetemail")
 //random otp 
-const generateOtp = () => Math.floor(10000+Math.random()*900000);
+const generateOtp = () => Math.floor(100000+Math.random()*900000).toString();
 
 //while click on forgetpassword
-
 const forgetpassword = async (req,res)=>{
     try{
         const {email}= req.body;
+        if (!email) {
+            return res.status(400).send("Email is required");
+        }
         const user = await findUserByEmail(email);
         if (!user) {
         return res.status(400).send("Email not registered");
         }
+        if (!user.is_active) {
+        return res.status(403).send("Verify your email first before resetting password");
+        }
         const otp = generateOtp();
+        await pool.query(
+        "DELETE FROM password_reset_otps WHERE email = $1",
+        [email]
+        );
         //storing otp in db 
-        await saveOtp(email,otp);
+        await pool.query(
+        `INSERT INTO password_reset_otps (user_id, email, otp, expires_at)
+        VALUES ($1, $2, $3, NOW() + INTERVAL '10 minutes')`,
+        [user.id, email, otp]
+        );
         // sending mail from util folder by nodemailer
-        await sendotpEmail(email,otp);
+        await fgpass(email,otp);
         res.status(200).send("OTP sent to your email");
         }
         catch(err){
@@ -26,32 +39,40 @@ const forgetpassword = async (req,res)=>{
             res.status(500).send("Server")
         }
     }
-
     // matching otp
 const verifyotp = async (req,res)=>{
     try{
     const {email,otp}= req.body;
+    if (!email || !otp) {
+        return res.status(400).send("Email and OTP are required");
+    }
+    await pool.query(
+        "DELETE FROM password_reset_otps WHERE email = $1 AND expires_at < NOW()",
+        [email]
+    );
     const user = await findUserByEmail(email);
     if(!user){
-        res.status(400).send("Email not found.");
+        return res.status(400).send("Email not found.");
     }
-    //if otp is wrong:
-    if(user.otp!=otp){
-        res.status(400).send("invalid otp.");
+    if (!user.is_active) {
+        return res.status(403).send("Account not verified. Cannot reset password.");
     }
-    if(!user.otp_expires_at || new Date(user.otp_expires_at)<new Date()){
-        await pool.query(
-        "UPDATE users SET otp = NULL, otp_expires_at = NULL, otp_verified = FALSE WHERE email = $1",
-        [email]
+    const result = await pool.query(
+      `SELECT * FROM password_reset_otps
+        WHERE email = $1 
+        AND otp = $2
+        AND used = false
+        AND expires_at > NOW()`,
+        [email, otp]
     );
-        return res.status(400).send("OTP EXPIRED!");
+    if (result.rows.length === 0) {
+    return res.status(400).send("Invalid OTP");
     }
-    // marks otp as verfied
+    const otpRow = result.rows[0];
     await pool.query(
-        "UPDATE users SET otp_verified = TRUE WHERE email = $1",
-        [email]
+        "UPDATE password_reset_otps SET used = true WHERE id = $1",
+        [otpRow.id]
     );
-
     res.status(200).send("otp verified");
     }catch(err){
         res.status(500).send("server error");
@@ -60,16 +81,45 @@ const verifyotp = async (req,res)=>{
 const resetPassword = async (req,res)=>{
     try{
         const {email,newPassword} = req.body;
+        if (!email || !newPassword) {
+        return res.status(400).send("Email and new password required");
+        }
+        const user = await findUserByEmail(email);
+        if (!user) {
+        return res.status(400).send("User not found");
+        }
+        if (!user.is_active) {
+        return res.status(403).send("Account not verified. Cannot reset password.");
+        }
+        await pool.query(
+        "DELETE FROM password_reset_otps WHERE email = $1 AND expires_at < NOW()",
+        [email]
+        );
+        const check = await pool.query(
+        `SELECT * FROM password_reset_otps 
+        WHERE email = $1 AND used = true
+        AND expires_at > NOW() 
+        ORDER BY created_at DESC LIMIT 1`,
+        [email]
+        );
+        if (check.rows.length === 0) {
+        return res.status(400).send("Verify OTP first");
+        }
         const saltrounds=10;
         const hashPassword= await bcrypt.hash(newPassword,saltrounds);
         await pool.query(
-            `UPDATE users SET password = $1, otp= NULL, otp_expires_at =NULL,otp_verified = False WHERE email = $2`,
+            `UPDATE users SET password = $1 WHERE email = $2`,
             [hashPassword,email]
         );
-        return res.status(200).send("PASSWORD UPDATED SUCESSFULLY.")
-    }catch(err){
-        res.status(500).send("Server error");
-    }
+        await pool.query(
+        `DELETE FROM password_reset_otps 
+        WHERE email = $1 AND used = true`,
+        [email]
+        );
+        return res.status(200).send("PASSWORD UPDATED SUCESSFULLY.");
+    }catch(err){ console.error("❌ REGISTER ERROR:", err);
+        res.status(500).json({ error: err.message }); 
+        }
 };
 module.exports = {
     forgetpassword,

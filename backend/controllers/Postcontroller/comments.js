@@ -1,6 +1,7 @@
 const pool = require("../../config/db");
 //fetching comments main comments only where parent comid is null
 const getCommentsByPost = async (req, res) => {
+    try{
     const { id } = req.params; //post id
     console.log(id);
     //first check the post 
@@ -8,35 +9,42 @@ const getCommentsByPost = async (req, res) => {
     if (postCheck.rows.length === 0) {
     return res.status(404).json({ message: "Post not found" });
     }
-    //then selct comments in the 
     const result = await pool.query(`
-    SELECT c1.id AS comment_id,c1.comment AS main_comment,c2.id AS reply_id,c2.comment AS reply_text FROM comments c1 LEFT JOIN comments c2 ON c2.parent_comment_id = c1.id WHERE c1.post_id = $1 AND c1.parent_comment_id IS NULL;`, [id]);
-    if (result.rows.length === 0) {
-        return res.status(404).json({ message: " no comments" });
-    }
-    res.json(result.rows);
-    };
+    SELECT c.id, c.comment,
+    c.user_id, c.created_at,
+    u.name FROM comments c
+    JOIN users u ON
+    u.id = c.user_id 
+    WHERE c.post_id = $1 
+    AND c.parent_comment_id 
+    IS NULL ORDER BY
+    c.created_at DESC;`
+    ,[id]);
     
-    //getCommentsreplybypost replys of the comment;
-const getCommentsreplyByPost = async (req, res) => {
-    try{
-    const { id,commentId} = req.params;
-    console.log(commentId);
-    console.log(id);
-
-    const postCheck = await pool.query("SELECT id FROM posts WHERE id = $1",[id]);
-    if (postCheck.rows.length === 0) {
-    return res.status(404).json({ message: "Post not found" });
-    }
-    const result = await pool.query(`
-    SELECT c1.id AS comment_id,c1.comment AS main_comment,c2.id AS reply_id,c2.comment AS reply_text FROM comments c1 LEFT JOIN comments c2 ON c2.parent_comment_id = c1.id WHERE c1.post_id = $1 AND c1.id=$2;`, [id,commentId]);
     if (result.rows.length === 0) {
-        return res.status(404).json({ message: " no replies" });
+        return res.status(200).json({ message: " no comments" });
     }
-    res.json(result.rows);  
+    const commentswithReplies = await Promise.all(
+        result.rows.map(async(comment)=>{
+            const replies = await pool.query(`
+                SELECT c.id, c.comment,
+                c.user_id, c.created_at,
+                u.name FROM comments c
+                JOIN users u ON 
+                u.id = c.user_id 
+                WHERE c.parent_comment_id = $1
+                ORDER BY c.created_at ASC;`
+                ,[comment.id]);
+        return {
+            ...comment,
+            replies: replies.rows
+        };
+    })
+    );
+    res.json(commentswithReplies);
     }
-    catch (err) {
-    res.status(500).json({ error: err.message });
+    catch(err){
+        res.status(500).json({error:err.message});
     }
 };
 // add comment
@@ -84,5 +92,4 @@ module.exports = {
     addComment,
     addReply,
     deletecomment,
-    getCommentsreplyByPost
 }

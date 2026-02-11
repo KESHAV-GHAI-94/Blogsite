@@ -5,9 +5,17 @@ require("dotenv").config();
 const loginuser = async(req,res) =>{
     try{
         const {email,password}= req.body;
+        if (!email || !password) {
+        return res.status(400).json({ message: "Email and password required" });
+        }
         const user = await findUserByEmail(email);
         if(!user){
-            return res.status(400).send("user not found!");
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+        if (!user.is_active) {
+        return res.status(403).json({
+            message: "Please verify your email before logging in"
+        });
         }
         const isMatch = await bcrypt.compare(password,user.password);
         if (!isMatch) {

@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const sendotpEmail = async(email,otp)=>{
+const fgpass = async(email,otp)=>{
     try{
         const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -28,4 +28,4 @@ const sendotpEmail = async(email,otp)=>{
         throw err;
     }
 };
-module.exports = {sendotpEmail};
+module.exports = {fgpass};

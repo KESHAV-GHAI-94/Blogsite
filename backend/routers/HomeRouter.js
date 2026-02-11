@@ -18,8 +18,6 @@ HomeRouter.post("/post/:id/unlike",auth,unlikePost);
 
 //reading comments 
 HomeRouter.get("/post/:id/comments",getCommentsByPost);
-//reading replys of comment: this can also work like to check reply of replies.
-HomeRouter.get("/post/:id/comment/:commentId",auth,getCommentsreplyByPost);
 //adding comments:
 HomeRouter.post("/post/:id/comment",auth, addComment);
 //adding reply
