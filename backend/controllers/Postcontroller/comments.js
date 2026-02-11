@@ -24,8 +24,23 @@ const addReply = async (req, res) => {
     await pool.query(`INSERT INTO comments (user_id,post_id,parent_comment_id, comment) VALUES ($1, $2, $3, $4)`,[user_id, id, commentId, comment]);
     res.status(201).send("reply sended");
 };
+const deletecomment = async(req,res)=>{
+    try{
+    const {commentId,id} = req.params;
+    console.log(commentId, "id comment deleted. "); //
+    const result =await pool.query(`DELETE FROM comments WHERE id=$1 and post_id= $2 RETURNING *;`,[commentId,id]);
+    if (result.rows.length === 0) {
+        return res.status(404).json({ message: " Comment not found" });
+    }
+    res.json({ message: "Comment DELETED" });
+    }
+    catch (err) {
+    res.status(500).json({ error: err.message });
+    }
+} ;
 module.exports = {
     getCommentsByPost,
     addComment,
-    addReply
+    addReply,
+    deletecomment
 }
