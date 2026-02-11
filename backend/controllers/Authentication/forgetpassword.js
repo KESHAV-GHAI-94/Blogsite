@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const pool = require("../../config/db")
-const { findUserByEmail,saveOtp,clearotp } = require("../../models/UserModel");
+const { findUserByEmail,saveOtp } = require("../../models/UserModel");
 const {sendotpEmail} = require("../../utils/sendEmail")
 //random otp 
 const generateOtp = () => Math.floor(10000+Math.random()*900000);
