@@ -1,6 +1,5 @@
 const express = require("express");
 const PostRouter = express.Router();
-const {createPost} = require("../models/postModel"); 
 const auth = require("../middlewares/auth");
 const {Postcreated} = require("../controllers/Postcontroller/postcontrol");
 //api use to open createposts
