@@ -82,7 +82,7 @@ const ForgetPassword = () => {
 
       {showModal && (
   <div className="fixed inset-0 flex justify-center items-center 
-                  bg-black/40 backdrop-blur-sm z-50">
+                  bg-black/30 backdrop-blur-sm z-50">
     <div className="relative w-96 p-8 rounded-2xl 
                     bg-white/10 backdrop-blur-lg 
                     border border-white/20 
@@ -110,8 +110,7 @@ const ForgetPassword = () => {
       />
       <button
         onClick={verifyOtp}
-        className="w-full py-3 rounded-lg 
-                  bg-gradient-to-r from-green-400 to-emerald-500 
+        className="w-full py-3 rounded-lg bg-green-400 
                   hover:scale-105 transition-transform duration-200 
                   font-semibold"
       >

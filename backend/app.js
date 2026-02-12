@@ -23,7 +23,7 @@ app.use("/",IndexRouter);
 app.use("/sign-up",SignupRouter);
 app.use("/login",LoginRouter);
 app.use("/Home",HomeRouter);
-app.use("/post",PostRouter);
+app.use("/posts",PostRouter);
 app.use("/account",AccountRouter);
 app.listen(3000,()=>{
     console.log(`your port is running on ${process.env.PORT}`)

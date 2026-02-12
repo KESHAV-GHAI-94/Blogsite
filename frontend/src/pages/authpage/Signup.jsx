@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import {Link,useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 import axios from "axios";
 const Signup = () => {
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [loadingOtp, setLoadingOtp] = useState(false);
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -38,6 +42,26 @@ const Signup = () => {
     }
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
+  const verifySignupOtp = async () => {
+  if (!otp.trim()) return toast.error("Enter OTP");
+  try {
+    setLoadingOtp(true);
+    const res = await axios.post(
+      "http://localhost:3000/sign-up/verify-signup-otp",
+      {
+        email: form.email,
+        otp,
+      }
+    );
+    toast.success(res.data.message);
+    setShowOtpModal(false);
+    navigate("/login");
+  } catch (err) {
+    toast.error(err.response?.data?.message || "OTP failed");
+  } finally {
+    setLoadingOtp(false);
+  }
+};
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -59,10 +83,15 @@ const Signup = () => {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
-    Object.keys(form).forEach((key) =>
-      validateField(key, form[key])
-    );
-    if (Object.values(errors).some((err) => err)) return;
+    let hasError = false;
+    Object.keys(form).forEach((key) => {
+      validateField(key, form[key]);
+      if (!form[key]) hasError = true;
+    });
+    if (hasError) {
+      setLoading(false);
+      return;
+    }
     try {
       const res = await axios.post(
         "http://localhost:3000/sign-up", 
@@ -73,7 +102,7 @@ const Signup = () => {
         }
       );
       toast.success(res.data.message);
-      navigate("/verify-otp", { state: { email: form.email } });
+      setShowOtpModal(true);
     } catch (err) {
       toast.error(err.response?.data?.message || "Signup failed");
     }
@@ -82,12 +111,13 @@ const Signup = () => {
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-10 rounded-xl shadow-lg w-[500px]"
+        className="bg-white p-10 rounded-xl shadow-lg w-120"
       >
         <h2 className="text-2xl font-bold mb-6 text-center">
           Create Account
         </h2>
         <div className="mb-4">
+          <label id="signupl">Full Name</label>
           <input
             name="name"
             placeholder="Full Name"
@@ -99,6 +129,7 @@ const Signup = () => {
           <p className="text-red-500 text-sm">{errors.name}</p>
         </div>
         <div className="mb-4">
+          <label id="signupl">Email</label>
           <input
             name="email"
             placeholder="Email"
@@ -110,6 +141,7 @@ const Signup = () => {
           <p className="text-red-500 text-sm">{errors.email}</p>
         </div>
         <div className="mb-4 relative">
+          <label id="signupl">Password</label>
           <input
             type={showPass ? "text" : "password"}
             name="password"
@@ -122,13 +154,14 @@ const Signup = () => {
           <button
             type="button"
             onClick={() => setShowPass(!showPass)}
-            className="absolute right-3 top-3"
+            className="absolute right-3 top-9"
           >
             {showPass ? "👁️" : "🙈"}
           </button>
           <p className="text-red-500 text-sm">{errors.password}</p>
         </div>
         <div className="mb-4 relative">
+          <label id="signupl">Confirm Password</label>
           <input
             type={showCPass ? "text" : "password"}
             name="cpassword"
@@ -141,7 +174,7 @@ const Signup = () => {
           <button
             type="button"
             onClick={() => setShowCPass(!showCPass)}
-            className="absolute right-3 top-3"
+            className="absolute right-3 top-9"
           >
             {showCPass ? "👁️" : "🙈"}
           </button>
@@ -163,6 +196,46 @@ const Signup = () => {
 <Link className="loginlink  text-blue-700" to="/login"> Sign in.</Link>
       </div>
       </form>
+      {showOtpModal && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black/20  z-50">
+    
+    <div className="bg-white p-8 rounded-xl shadow-lg w-96 relative">
+      
+      <h2 className="text-xl font-semibold text-center mb-4">
+        Verify OTP
+      </h2>
+
+      <p className="text-sm text-gray-500 text-center mb-4">
+        OTP sent to <span className="font-medium">{form.email}</span>
+      </p>
+
+      <input
+        type="text"
+        placeholder="Enter 6-digit OTP"
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+        className="w-full border border-gray-300 rounded-lg p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      />
+
+      <button
+        onClick={verifySignupOtp}
+        disabled={loadingOtp}
+        className={`w-full p-3 rounded-lg text-white font-semibold
+          ${loadingOtp ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}
+        `}
+      >
+        {loadingOtp ? "Creating..." : "Sign Up"}
+      </button>
+
+      <button
+        onClick={() => setShowOtpModal(false)}
+        className="absolute top-3 right-3 text-gray-500"
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+)}
     </div>
   </>
   );

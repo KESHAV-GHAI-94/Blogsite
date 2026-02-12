@@ -34,7 +34,6 @@ const Registeruser = async (req,res)=>{
         //for checking already existing acc.
         const existing = await findUserByEmail(email);
         if(existing && existing.is_active === true){
-            console.log("email already exists");
             return res.status(400).json("email already exists");
         }
         //exsts but not verified with otp

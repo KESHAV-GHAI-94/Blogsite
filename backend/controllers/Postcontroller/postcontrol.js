@@ -22,17 +22,27 @@ const Postcreated =  async (req,res)=>{
     }
 }
 //api which displays all posts public
-const Viewposts =  async(req,res)=>{
+const Viewposts = async (req, res) => {
     try {
         const result = await getAllPosts();
-    res.json({
-    message: "Welcome to Home Page",
-      posts: result.rows   //you will check posts here
-    });
+        const posts = result.rows.map(post => {
+            let imageUrl = null;
+            if (post.image_base64 && post.image_base64 !== null) {
+            imageUrl = `data:image/jpeg;base64,${post.image_base64}`;
+            }
+        return {
+            ...post,
+            image_url:imageUrl
+        };
+        });
+        res.json({
+        message: "Welcome to Home Page",
+        posts
+        });
     } catch (err) {
-    res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-} 
+};
 //api for opening post page 
 const detailedpost = async (req, res) => {
     try {

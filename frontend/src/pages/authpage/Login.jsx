@@ -88,9 +88,10 @@ return(
     <>
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
-            onSubmit={handleSubmit} className="bg-white p-10 rounded-xl shadow-lg w-[500px]">
+            onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow-lg w-[25%]">
             <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
             <div className="mb-4">
+            <label id="signupl">Email</label>
             <input
                 name="email"
                 placeholder="Email"
@@ -104,6 +105,7 @@ return(
             )}
             </div>
             <div className="mb-4 relative">
+            <label id="signupl">Password</label>
             <input
                 type={showPass ? "text" : "password"}
                 name="password"
@@ -116,7 +118,7 @@ return(
             <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}
-                className="absolute right-3 top-3"
+                className="absolute right-3 top-9"
             >
                 {showPass ? "👁️" : "🙈"}
             </button>
