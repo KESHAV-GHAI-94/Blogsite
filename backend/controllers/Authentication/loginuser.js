@@ -19,7 +19,7 @@ const loginuser = async(req,res) =>{
         }
         const isMatch = await bcrypt.compare(password,user.password);
         if (!isMatch) {
-        return res.status(401).send("Invalid credentials");
+        return res.status(401).json({message:"Invalid password"});
         }
         const token = jwt.sign(
         { id: user.id, email: user.email },
@@ -29,14 +29,13 @@ const loginuser = async(req,res) =>{
         res.cookie("authToken", token, {
         maxAge: 60 * 60 * 1000  // used for 1hr
         });
-        
         res.status(200).json({
             message: "Login successful",
             user:{id:user.id,name:user.name,email:user.email}
         });
     }
     catch(err){
-        res.status(500).send("server error")
-    }
+    res.status(500).json({ message: "Server error" });
+}
 };
 module.exports = {loginuser};

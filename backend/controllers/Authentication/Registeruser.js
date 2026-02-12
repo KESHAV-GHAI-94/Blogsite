@@ -13,14 +13,22 @@ const Registeruser = async (req,res)=>{
         if (!name || !email || !password) {
         return res.status(400).json({ message: "All fields are required" });
         }
+        const nameRegex = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
+            if (!nameRegex) return "Full Name is required";
+            if(nameRegex.length<=2) return "Name should be atleast of 3 characters.";
+            if (!nameRegex.test(name.trim())){
+                return "Only letters allowed, no extra spaces or symbols";
+                }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
         return res.status(400).json({ message: "Invalid email format" });
         }
-        if (password.length < 6) {
-        return res.status(400).json({ message: "Password must be at least 6 characters" });
+        const PasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        if (!PasswordRegex.test(password)) {
+            return res.status(400).json({
+                message: "Password must be 8+ chars with upper, lower & number"
+            });
         }
-
         const saltrounds = 10;
         const hashpassword = await bcrypt.hash(password,saltrounds)
         //for checking already existing acc.
@@ -32,7 +40,7 @@ const Registeruser = async (req,res)=>{
         //exsts but not verified with otp
         if (existing && existing.is_active === false) {
         const newOtp = generateOtp();
-        await saveOtp(email, newOtp); // <-- uses your model
+        await saveOtp(email, newOtp); 
         await sendEmailotp(email, newOtp);
         return res.status(200).json({
             message: "User exists but not verified — new OTP sent",
@@ -43,6 +51,7 @@ const Registeruser = async (req,res)=>{
         const user_otp=generateOtp();
         const user_otp_expiry = new Date(Date.now() + 10 * 60 * 1000);
         const user = await createUser(name,email,hashpassword,user_otp,user_otp_expiry,false);
+        await sendEmailotp(email, user_otp);
         res.status(201).json({
         message: "User registered. Verify OTP",
         userId: user.id,

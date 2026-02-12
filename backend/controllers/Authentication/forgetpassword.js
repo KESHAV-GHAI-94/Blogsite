@@ -10,14 +10,14 @@ const forgetpassword = async (req,res)=>{
     try{
         const {email}= req.body;
         if (!email) {
-            return res.status(400).send("Email is required");
+            return res.status(400).json({message: "Email is required"});
         }
         const user = await findUserByEmail(email);
-        if (!user) {
-        return res.status(400).send("Email not registered");
+        if (!user ) {
+        return res.status(400).json({ message: "Email not found" });
         }
         if (!user.is_active) {
-        return res.status(403).send("Verify your email first before resetting password");
+        return res.status(403).json({message:"Email not registered"});
         }
         const otp = generateOtp();
         await pool.query(
@@ -32,11 +32,11 @@ const forgetpassword = async (req,res)=>{
         );
         // sending mail from util folder by nodemailer
         await fgpass(email,otp);
-        res.status(200).send("OTP sent to your email");
+        res.status(200).json({message:"OTP sent to your email"});
         }
         catch(err){
             console.error(err);
-            res.status(500).send("Server")
+            res.status(500).json({message:"Server error"})
         }
     }
     // matching otp
@@ -44,7 +44,7 @@ const verifyotp = async (req,res)=>{
     try{
     const {email,otp}= req.body;
     if (!email || !otp) {
-        return res.status(400).send("Email and OTP are required");
+        return res.status(400).json({message:"Email and OTP are required"});
     }
     await pool.query(
         "DELETE FROM password_reset_otps WHERE email = $1 AND expires_at < NOW()",
@@ -52,11 +52,11 @@ const verifyotp = async (req,res)=>{
     );
     const user = await findUserByEmail(email);
     if(!user){
-        return res.status(400).send("Email not found.");
+        return res.status(400).json({message:"Email not found."});
     }
     if (!user.is_active) {
-        return res.status(403).send("Account not verified. Cannot reset password.");
-    }
+        return res.status(403).json({message:"Email not registered"});
+        }
     const result = await pool.query(
       `SELECT * FROM password_reset_otps
         WHERE email = $1 
@@ -66,30 +66,30 @@ const verifyotp = async (req,res)=>{
         [email, otp]
     );
     if (result.rows.length === 0) {
-    return res.status(400).send("Invalid OTP");
+    return res.status(400).json({message:"Invalid OTP"});
     }
     const otpRow = result.rows[0];
     await pool.query(
         "UPDATE password_reset_otps SET used = true WHERE id = $1",
         [otpRow.id]
     );
-    res.status(200).send("otp verified");
+    res.status(200).json({message:"otp verified"});
     }catch(err){
-        res.status(500).send("server error");
+        res.status(500).json({message:"server error"});
     }
 }
 const resetPassword = async (req,res)=>{
     try{
         const {email,newPassword} = req.body;
         if (!email || !newPassword) {
-        return res.status(400).send("Email and new password required");
+        return res.status(400).json({message:"Email and new password required"});
         }
         const user = await findUserByEmail(email);
         if (!user) {
-        return res.status(400).send("User not found");
+        return res.status(400).json({message:"User not found"});
         }
         if (!user.is_active) {
-        return res.status(403).send("Account not verified. Cannot reset password.");
+        return res.status(403).json({message:"Account not verified. Cannot reset password."});
         }
         await pool.query(
         "DELETE FROM password_reset_otps WHERE email = $1 AND expires_at < NOW()",
@@ -103,7 +103,7 @@ const resetPassword = async (req,res)=>{
         [email]
         );
         if (check.rows.length === 0) {
-        return res.status(400).send("Verify OTP first");
+        return res.status(400).json({message:"Verify OTP first"});
         }
         const saltrounds=10;
         const hashPassword= await bcrypt.hash(newPassword,saltrounds);
@@ -116,9 +116,10 @@ const resetPassword = async (req,res)=>{
         WHERE email = $1 AND used = true`,
         [email]
         );
-        return res.status(200).send("PASSWORD UPDATED SUCESSFULLY.");
-    }catch(err){ console.error("❌ REGISTER ERROR:", err);
-        res.status(500).json({ error: err.message }); 
+        return res.status(200).json({message:"PASSWORD UPDATED SUCESSFULLY."});
+    }catch(err){ 
+        console.error("ERROR:", err);
+        return res.status(500).json({ error: err.message }); 
         }
 };
 module.exports = {
