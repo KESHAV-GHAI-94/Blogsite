@@ -16,13 +16,11 @@ app.use(express.urlencoded({extended:true}));
 const IndexRouter = require("./routers/IndexRouter");
 const SignupRouter = require("./routers/SignupRouter");
 const LoginRouter = require("./routers/LoginRouter");
-const HomeRouter = require("./routers/HomeRouter");
 const AccountRouter = require("./routers/AccountRouter");
 const PostRouter = require("./routers/PostRouter")
 app.use("/",IndexRouter);
 app.use("/sign-up",SignupRouter);
 app.use("/login",LoginRouter);
-app.use("/Home",HomeRouter);
 app.use("/posts",PostRouter);
 app.use("/account",AccountRouter);
 app.listen(3000,()=>{

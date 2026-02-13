@@ -189,7 +189,7 @@ const Signup = () => {
     : "bg-blue-500 hover:bg-blue-600"
   }`}
 >
-  {loading ? "Verifying..." : "Verify OTP"}
+  {loading ? "Creating User..." : "Sign Up"}
 </button>
 <div className="flex justify-center gap-5">
 <p>Already have an account.</p>
@@ -224,7 +224,7 @@ const Signup = () => {
           ${loadingOtp ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}
         `}
       >
-        {loadingOtp ? "Creating..." : "Sign Up"}
+        {loadingOtp ? "Geting verified..." : "Verify Otp"}
       </button>
 
       <button

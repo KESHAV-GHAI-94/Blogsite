@@ -10,9 +10,13 @@
   import ResetPassword from "./pages/authpage/forget page/Resetpassword";
   import Posts from "./pages/public_acess_page/Posts";
   import  Detailedpage from "./pages/public_acess_page/Detailedpage";
+  import Myposts from "./pages/Myposts";
+  import Footer from "./components/Footer";
+  import Createpost from './pages/Createpost';
   const App = () => {
     return (
       <div>
+        <div className="flex flex-col min-h-screen">
         <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -22,9 +26,13 @@
           <Route path="/login/reset-password" element={<ResetPassword />} />
           <Route path="/login/forget-password" element={<Forgetpassword/>}/>
           <Route path="/posts/post/:id" element = {<Detailedpage/>}/>
+          <Route path="/account/my-posts" element={<Myposts/>}/>
+          <Route path="/account/create-post" element={<Createpost/>}/>
         </Routes>
-        <ToastContainer position="top-right" autoClose={3000} />
       </div>
+        <Footer/>
+        <ToastContainer position="top-right" autoClose={3000} />
+        </div>
     );
   };
 

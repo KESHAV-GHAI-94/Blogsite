@@ -1,10 +1,8 @@
 const pool = require("../../config/db");
 //fetching comments main comments only where parent comid is null
-//only for api purpose
 const getCommentsByPost = async (req, res) => {
     try{
     const { id } = req.params; //post id
-    console.log(id);
     //first check the post 
     const postCheck = await pool.query("SELECT id FROM posts WHERE id = $1",[id]);
     if (postCheck.rows.length === 0) {
@@ -21,28 +19,9 @@ const getCommentsByPost = async (req, res) => {
     IS NULL ORDER BY
     c.created_at DESC;`
     ,[id]);
-    
     if (result.rows.length === 0) {
         return res.status(200).json({ message: " no comments" });
     }
-    const commentswithReplies = await Promise.all(
-        result.rows.map(async(comment)=>{
-            const replies = await pool.query(`
-                SELECT c.id, c.comment,
-                c.user_id, c.created_at,
-                u.name FROM comments c
-                JOIN users u ON 
-                u.id = c.user_id 
-                WHERE c.parent_comment_id = $1
-                ORDER BY c.created_at ASC;`
-                ,[comment.id]);
-        return {
-            ...comment,
-            replies: replies.rows
-        };
-    })
-    );
-    res.json(commentswithReplies);
     }
     catch(err){
         res.status(500).json({error:err.message});

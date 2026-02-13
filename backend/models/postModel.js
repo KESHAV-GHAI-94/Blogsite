@@ -44,7 +44,7 @@ const getPostsByUser = async (user_id) => {
 const updatePost = async (id, title, description, image_url) => {
   const query = `
     UPDATE posts 
-    SET title=$1, description=$2, image_url=$3
+    SET title=$1, description=$2, image_url = COALESCE($3, image_url)
     WHERE id=$4
     RETURNING *;
   `;

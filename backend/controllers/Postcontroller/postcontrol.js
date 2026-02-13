@@ -5,7 +5,10 @@ const {createPost,getAllPosts,getPostsByUser,updatePost,deletePost,getRawPostsBy
 const Postcreated =  async (req,res)=>{
     try {
     const { title, description} = req.body;
-    const image_url = req.file ? req.file.buffer : null;
+    let image_url = null;
+        if (req.file) {
+        image_url = req.file.buffer;
+        }
     const user_id = req.user.id; 
     const result = await createPost(
         user_id,
@@ -133,7 +136,10 @@ const Updatepost =  async (req, res) => {
     try {
         const id = req.params.id;
         const { title, description} = req.body;
-        const image_url = req.file ? req.file.buffer : null;
+        let image_url = null;
+        if (req.file) {
+        image_url = req.file.buffer;
+        }
         const check = await getRawPostsByUser(req.user.id);
         const isOwner = check.rows.some(post => post.id === Number(id));
         if (!isOwner) {
