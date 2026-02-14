@@ -9,10 +9,12 @@ const shortDesc =
 return (
     <Link to={`/posts/post/${post.id}`} className="detailedpost">
     <div
-        className={`bg-white rounded-2xl border border-gray-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden group ${
-        view === "list" ? " w-[800px] flex" : ""
-        }`}
-    >
+        className={`bg-white rounded-2xl border border-gray-200 
+        hover:shadow-xl hover:-translate-y-1 
+        transition-all duration-300 overflow-hidden group
+        flex flex-col
+        ${view === "list" ? "w-[800px] h-[200px] flex-row" : ""}`}
+        >
         {post.image_url && (
         <div className={`relative ${view === "list" ? "w-2/6" : ""}`}>
             <img
@@ -20,8 +22,8 @@ return (
             loading="lazy"
             alt={post.title}
             className={`w-full object-cover transition-all duration-500
-            ${view === "grid" ? "h-[280px]" : "h-[160px]"}
-            group-hover:blur-sm group-hover:scale-105`}
+            ${view === "grid" ? "h-[220px]" : "h-full w-[250px]"}
+            group-hover:scale-105`}
             />
             <div
             className="absolute inset-0 bg-black/10 backdrop-blur-sm opacity-0 

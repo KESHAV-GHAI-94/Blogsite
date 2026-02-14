@@ -232,7 +232,7 @@ const Signup = () => {
         className="absolute top-3 right-3 text-gray-500"
       >
         ✕
-      </button>
+      </button> 
     </div>
   </div>
 )}
@@ -242,3 +242,36 @@ const Signup = () => {
 };
 
 export default Signup;
+
+
+
+
+// import React, { useState } from "react";
+// import SignupForm from "../../components/Signup page/SignupForm";
+// import SignupOtpModal from "../../components/Signup page/SignupOtpModal";
+
+// const Signup = () => {
+//   const [showOtpModal, setShowOtpModal] = useState(false);
+//   const [emailForOtp, setEmailForOtp] = useState("");
+
+//   return (
+//     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+
+//       <SignupForm
+//         onOtpSent={(email) => {
+//           setEmailForOtp(email);
+//           setShowOtpModal(true);
+//         }}
+//       />
+
+//       <SignupOtpModal
+//         show={showOtpModal}
+//         email={emailForOtp}
+//         onClose={() => setShowOtpModal(false)}
+//       />
+
+//     </div>
+//   );
+// };
+
+// export default Signup;

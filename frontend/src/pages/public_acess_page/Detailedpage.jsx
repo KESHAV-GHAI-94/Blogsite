@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Comments from "../../components/Comments.jsx";
+import Comments from "../../components/comments.jsx";
 import axios from "axios";
 const Detailedpage = () => {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
-
-const error=""
-
-  useEffect(() => {
-    fetchPost();
-  }, [id]);
-
+const error="";
   const fetchPost = async () => {
     try {
       const res = await axios.get(
@@ -28,6 +22,9 @@ const error=""
       setLoading(false);
     }
   };
+  useEffect(() => {
+    fetchPost();
+  }, [id]);
 //like
 const handleLike = async () => {
   try {
@@ -70,13 +67,12 @@ const handleUnlike = async () => {
   if (!post)
     return <h2 className="text-center mt-10">Post not found</h2>;
     return (
-      <div className="w-full bg-gray-100 mx-auto 4 border border-gray-200 shadow-md">
-      <div className="w-[800px] bg-grey-100 mx-auto px-4 mb-5 border border-gray-200 shadow-md rounded">
+      <div className="w-[ 800px ] bg-grey-100 mx-auto px-4 mb-4 border border-gray-200 shadow-md rounded">
       {post.image_base64 && (
         <img
           src={`data:image/jpeg;base64,${post.image_base64}`}
           alt={post.title}
-          className="w-full h-[400px] mt-5 object-cover rounded-2xl mb-2"
+          className="w-[700px] h-[400px] mt-5 object-cover rounded-2xl mb-2 mx-auto"
         />
       )}
       <h1 className="text-3xl font-bold text-gray-900 ">
@@ -101,11 +97,10 @@ const handleUnlike = async () => {
         {post.description}
       </p>
       <Comments
-        postId={post.id}
-        comments={comments}
-        fetchPost={fetchPost}
-      />
-    </div>
+      postId={post.id}
+      comments={comments}
+      fetchPost={fetchPost}
+    />
     </div>
   );
 };

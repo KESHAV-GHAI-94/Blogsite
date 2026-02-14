@@ -85,6 +85,7 @@ const detailedpost = async (req, res) => {
             c.comment,
             c.created_at,
             c.parent_comment_id,
+            c.user_id,
             u.name AS commenter_name
         FROM comments c
         JOIN users u ON c.user_id = u.id
@@ -112,7 +113,8 @@ const detailedpost = async (req, res) => {
             like_count: Number(post.like_count),
             isLiked
         },
-        comments: nestedComments
+        comments: nestedComments,
+        currentUserId: userId
         });
     } catch (err) {
         res.status(500).json({ error: err.message });

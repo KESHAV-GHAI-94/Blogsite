@@ -73,11 +73,11 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                 loading="lazy"
                 alt={post.title}
                 className={`w-full object-cover transition-all duration-500
-              ${view === "grid" ? "h-[280px]" : "h-[160px]"}`}
+            ${view === "grid" ? "h-[220px]" : "h-full w-[250px]"}
+            group-hover:scale-105`}
               />
             </div>
           )}
-
           <div className="px-5 py-2 flex flex-row justify-between w-full">
             <div>
               <h2 className="text-lg font-bold text-gray-800 mb-2">
