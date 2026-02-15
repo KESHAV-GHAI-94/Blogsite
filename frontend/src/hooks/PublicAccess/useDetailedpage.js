@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import {toast} from "react-toastify";
 export function useDetailedpage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
@@ -20,6 +21,7 @@ export function useDetailedpage() {
     } catch (err) {
       console.error(err);
       setError("Failed to load post");
+      toast.error("you need to login first ")
     } finally {
       setLoading(false);
     }
@@ -29,6 +31,14 @@ export function useDetailedpage() {
   }, [id]);
   //like
   const handleLike = async () => {
+    if (!currentUserId) {
+    toast.error("Please login first to like a post.");
+    return;
+  }
+    if (post.isLiked) {
+    toast.info("You already liked this post");
+    return;
+  }
     try {
       setPost((prev) => ({
         ...prev,
@@ -41,11 +51,22 @@ export function useDetailedpage() {
         { withCredentials: true },
       );
     } catch (err) {
-      console.error(err);
-      fetchPost();
-    }
+        if (err.response?.status === 401) {
+        toast.error("Please login first to like a post.");
+        } 
+        console.error(err);
+        fetchPost();
+      }
   };
   const handleUnlike = async () => {
+    if (!currentUserId) {
+    toast.error("Please login first to unlike a post.");
+    return;
+  }
+    if (!post.isLiked) {
+    toast.info("You haven't liked this post");
+    return;
+  }
     try {
       setPost((prev) => ({
         ...prev,
@@ -58,9 +79,12 @@ export function useDetailedpage() {
         { withCredentials: true },
       );
     } catch (err) {
-      console.error(err);
-      fetchPost();
-    }
+        if (err.response?.status === 401) {
+        toast.error("Please login first to like a post.");
+        } 
+        console.error(err);
+        fetchPost();
+      }
   };
   return {
     post,

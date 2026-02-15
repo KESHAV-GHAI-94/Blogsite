@@ -27,7 +27,6 @@ const likePost = async (req, res) => {
     try {
     const user_id = req.user.id;
     const post_id = req.params.id;
-
     const query = `
         DELETE FROM likes
         WHERE user_id = $1 AND post_id = $2
