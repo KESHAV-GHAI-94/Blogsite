@@ -11,7 +11,8 @@ const getCommentsByPost = async (req, res) => {
     const result = await pool.query(`
     SELECT c.id, c.comment,
     c.user_id, c.created_at,
-    u.name FROM comments c
+    u.name AS commenter_name
+    FROM comments c
     JOIN users u ON
     u.id = c.user_id 
     WHERE c.post_id = $1 
@@ -19,9 +20,10 @@ const getCommentsByPost = async (req, res) => {
     IS NULL ORDER BY
     c.created_at DESC;`
     ,[id]);
-    if (result.rows.length === 0) {
-        return res.status(200).json({ message: " no comments" });
-    }
+    res.json({
+            comments: result.rows,
+            currentUserId: req.user.id
+        });
     }
     catch(err){
         res.status(500).json({error:err.message});
@@ -52,6 +54,11 @@ const addReply = async (req, res) => {
 };
 const deletecomment = async(req,res)=>{
     try{
+        if (!req.user) {
+        return res.status(401).json({
+            message: "Login required"
+        });
+        }
         const userId = req.user.id;
         console.log(userId);
     const {commentId} = req.params;

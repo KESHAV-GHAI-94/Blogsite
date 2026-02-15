@@ -5,7 +5,7 @@ const auth = require("../middlewares/auth");
 const {Postcreated,Viewposts,detailedpost} = require("../controllers/Postcontroller/postcontrol");
 const {likePost,unlikePost}= require("../controllers/Postcontroller/like-dislike")
 const {getCommentsByPost,addComment,addReply,deletecomment} = require("../controllers/Postcontroller/comments")
-
+const optionalauth = require("../middlewares/optionalauth")
 const upload = multer({
     storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }
@@ -14,7 +14,7 @@ const upload = multer({
 PostRouter.get("/",Viewposts);
 //api for opening post page 
 
-PostRouter.get("/post/:id",detailedpost);
+PostRouter.get("/post/:id",optionalauth,detailedpost);
 
 //API FOR likes/dislikes
 PostRouter.post("/:id/like",auth,likePost);

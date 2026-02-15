@@ -31,22 +31,12 @@ const Footer = () => {
                 My Posts
               </Link>
             </li>
-            <li>
-              <Link to="/create-post" className="hover:text-yellow-300">
-                Create Post
-              </Link>
-            </li>
           </ul>
         </div>
         <div>
           <h3 className="font-semibold text-lg mb-4">Connect With Us</h3>
           <p className="text-sm mb-2">📧 support@blogge.com</p>
           <p className="text-sm mb-2">📍 India</p>
-          <div className="flex gap-4 mt-3">
-            <span className="hover:text-yellow-300 cursor-pointer">🌐</span>
-            <span className="hover:text-yellow-300 cursor-pointer">🐦</span>
-            <span className="hover:text-yellow-300 cursor-pointer">📘</span>
-          </div>
         </div>
       </div>
       <div className="border-t border-white/30 mt-8 pt-2 text-center text-sm text-gray-200">

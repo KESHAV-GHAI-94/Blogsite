@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
-const Comments = ({ postId, comments, fetchPost }) => {
+const Comments = ({ postId, comments, fetchPost, currentUserId }) => {
 const [newComment, setNewComment] = useState("");
 const addComment = async () => {
     if (!newComment.trim()) return;
-    await axios.post(
+    const res =await axios.post(
     `http://localhost:3000/posts/${postId}/comment`,
     { comment: newComment },
     { withCredentials: true },
     );
+    console.log(res.data);
     setNewComment("");
     fetchPost();
 };
@@ -34,6 +35,7 @@ return (
         comment={comment}
         postId={postId}
         fetchPost={fetchPost}
+        currentUserId={currentUserId}
         />
     ))}
     </div>
@@ -41,7 +43,7 @@ return (
 };
 export default Comments;
 
-const CommentItem = ({ comment, postId, fetchPost }) => {
+const CommentItem = ({ comment, postId, fetchPost,currentUserId }) => {
 const [showReply, setShowReply] = useState(false);
 const [replyText, setReplyText] = useState("");
 const addReply = async () => {
@@ -54,7 +56,10 @@ const addReply = async () => {
     setReplyText("");
     setShowReply(false);
     fetchPost();
+    
 };
+console.log("currentUserId:", currentUserId);
+console.log("comment.user_id:", comment.user_id);
 const deleteComment = async () => {
     await axios.post(
     `http://localhost:3000/posts/${postId}/comment/${comment.id}/delete`,
@@ -79,9 +84,11 @@ return (
             >
             Reply
             </button>
+            {currentUserId === comment.user_id && (
             <button onClick={deleteComment} className="hover:text-red-600">
             Delete
             </button>
+            )}
         </div>
         {showReply && (
             <div className="mt-3 flex gap-2">
@@ -110,6 +117,7 @@ return (
             comment={reply}
             postId={postId}
             fetchPost={fetchPost}
+            currentUserId={currentUserId}
             />
         ))}
         </div>

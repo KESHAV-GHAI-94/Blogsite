@@ -6,6 +6,7 @@ export function useDetailedpage() {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comments, setComments] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [error, setError] = useState(null);
   const fetchPost = async () => {
     try {
@@ -14,6 +15,7 @@ export function useDetailedpage() {
       });
       setPost(res.data.post);
       setComments(res.data.comments);
+      setCurrentUserId(res.data.currentUserId);
       setError(null);
     } catch (err) {
       console.error(err);
@@ -68,5 +70,6 @@ export function useDetailedpage() {
     fetchPost,
     handleLike,
     handleUnlike,
+    currentUserId,
   };
 }

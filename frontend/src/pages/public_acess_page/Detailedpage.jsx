@@ -9,6 +9,7 @@ const Detailedpage = () => {
     fetchPost,
     handleLike,
     handleUnlike,
+    currentUserId
   } = useDetailedpage();
   if (loading) return <h2 className="text-center mt-10">Loading...</h2>;
   if (error) return <h2 className="text-center mt-10 text-red-500">{error}</h2>;
@@ -44,7 +45,7 @@ const Detailedpage = () => {
       <p className="text-gray-700 px-2 leading-relaxed mb-4">
         {post.description}
       </p>
-      <Comments postId={post.id} comments={comments} fetchPost={fetchPost} />
+      <Comments postId={post.id} comments={comments} fetchPost={fetchPost} currentUserId={currentUserId} />
     </div>
   );
 };
