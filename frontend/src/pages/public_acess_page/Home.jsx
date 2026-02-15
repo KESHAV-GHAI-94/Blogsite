@@ -1,7 +1,6 @@
 import React from "react";
 import imagbloghero from "../../assets/imagbloghero.png";
-import {Link} from "react-router-dom";
-
+import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div
@@ -18,17 +17,14 @@ const Home = () => {
         </p>
         <div className="flex justify-center gap-6 flex-wrap">
           <Link to="/sign-up">
-          <button
-            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 transition rounded-full text-white font-semibold shadow-lg"
-          >
-            Start Blogging
-          </button></Link>
+            <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 transition rounded-full text-white font-semibold shadow-lg">
+              Start Blogging
+            </button>
+          </Link>
           <Link to="/posts">
-          <button
-            className="px-8 py-3 bg-white text-gray-800 hover:bg-gray-200 transition rounded-full font-semibold shadow-lg"
-          >
-            Explore Posts
-          </button>
+            <button className="px-8 py-3 bg-white text-gray-800 hover:bg-gray-200 transition rounded-full font-semibold shadow-lg">
+              Explore Posts
+            </button>
           </Link>
         </div>
       </div>

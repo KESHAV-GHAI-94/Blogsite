@@ -1,18 +1,16 @@
 import React from "react";
-import blogge from "../assets/blogge.png";
+import blogge from "../../assets/blogge.png";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="bg-[#6ca1eb]  px-18 py-4 text-white">
-      
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-
         <div>
           <img src={blogge} alt="logo" className="h-12 mb-4" />
           <p className="text-sm text-gray-200 leading-relaxed">
-            Blogge is a modern blogging platform where users can share
-            ideas, stories, and experiences with the world.
+            Blogge is a modern blogging platform where users can share ideas,
+            stories, and experiences with the world.
           </p>
         </div>
         <div>
@@ -40,8 +38,6 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-
-        {/* Contact / Social */}
         <div>
           <h3 className="font-semibold text-lg mb-4">Connect With Us</h3>
           <p className="text-sm mb-2">📧 support@blogge.com</p>
