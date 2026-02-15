@@ -61,6 +61,7 @@ const UpdatepostModal = ({
               <input
                 type="text"
                 value={title}
+                maxLength={15}
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                 placeholder="Enter post title"

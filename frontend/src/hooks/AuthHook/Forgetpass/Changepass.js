@@ -6,6 +6,8 @@ export function Changepass() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
+  const [showPass, setShowPass] = useState(false);
+  const [showCPass, setShowCPass] = useState(false);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -53,11 +55,11 @@ export function Changepass() {
     if (!value.trim()) return;
     let error = "";
     if (name === "password") {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
       if (!value) {
         error = "Password is required";
-      } else if (value.length < 6) {
-        error = "Password must be at least 6 characters";
-      }
+      } else if (!passwordRegex.test(value))
+        error = "8+ chars with upper, lower & number";
     }
     if (name === "confirmPassword") {
       if (!value) {
@@ -81,5 +83,9 @@ export function Changepass() {
     touched,
     handleBlur,
     handleReset,
+    showCPass,
+    showPass,
+    setShowPass,
+    setShowCPass
   };
 }

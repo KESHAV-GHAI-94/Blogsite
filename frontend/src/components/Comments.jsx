@@ -97,14 +97,14 @@ const deleteComment = async () => {
 }
 };
 return (
-    <div className="mb-2 p-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition">
+    <div className="mb-2 pe-1 p-3 ml-2 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition">
     <div className="flex gap-4  rounded-xl hover:bg-gray-50 transition">
         <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-sm font-semibold text-gray-600">
         {comment.commenter_name?.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">
         <p className="font-semibold text-sm text-gray-800">{comment.commenter_name}</p>
-        <p className="text-grey-700 text-sm mt-1">{comment.comment}</p>
+        <p className="text-grey-700 text-sm ml-3 mt-1">{comment.comment}</p>
         <div className="flex gap-6 text-xs text-gray-500 mt-2 font-medium">
             <button
             onClick={() => setShowReply(!showReply)}

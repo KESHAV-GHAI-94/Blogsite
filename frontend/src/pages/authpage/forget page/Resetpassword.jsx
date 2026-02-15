@@ -24,11 +24,13 @@ const ResetPassword = () => {
           Changing password for:
           <span className="font-medium text-black"> {email}</span>
         </p>
+        
+        <label className="p-2">Password</label>
         <input
           type="password"
           name="password"
           placeholder="Enter new password"
-          className="border p-3 w-full mb-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="border p-3 mt-2 w-full mb-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onBlur={handleBlur}
@@ -36,11 +38,12 @@ const ResetPassword = () => {
         {touched.password && errors.password && (
           <p className="text-red-500 text-sm mb-2">{errors.password}</p>
         )}
+        <label className="p-2"> Confirm Password</label>
         <input
           type="password"
           name="confirmPassword"
           placeholder="Confirm new password"
-          className="border p-3 w-full mb-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="border p-3  mt-2 w-full mb-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           onBlur={handleBlur}
@@ -48,7 +51,7 @@ const ResetPassword = () => {
         {touched.confirmPassword && errors.confirmPassword && (
           <p className="text-red-500 text-sm mb-4">{errors.confirmPassword}</p>
         )}
-        <button className="bg-green-500 hover:bg-green-600 transition text-white px-4 py-3 w-full rounded-lg font-semibold">
+        <button className="bg-green-500 mt-5 hover:bg-green-600 transition text-white px-5 py-3 w-full rounded-lg font-semibold">
           Update Password
         </button>
       </form>

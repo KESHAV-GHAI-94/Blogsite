@@ -20,9 +20,9 @@ export function LoginHandler() {
       else if (!emailRegex.test(value)) error = "Invalid email format";
     }
     if (name === "password") {
-      if (!value) error = "Password is required";
-      else if (value.length < 6)
-        error = "Password must be at least 6 characters";
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!passwordRegex.test(value))
+        error = "8+ chars with upper, lower & number";
     }
     return error;
   };

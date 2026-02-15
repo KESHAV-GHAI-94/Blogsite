@@ -33,8 +33,8 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                 src={`data:image/jpeg;base64,${post.image_base64}`}
                 loading="lazy"
                 alt={post.title}
-                className={`w-full object-cover transition-all duration-500
-            ${view === "grid" ? "h-[220px]" : "h-full w-[250px]"}
+                className={`w-full aspect-square object-cover transition-all duration-500
+            ${view === "grid" ? "h-[300px] " : "h-full w-[250px]"}
             group-hover:scale-105`}
               />
             </div>

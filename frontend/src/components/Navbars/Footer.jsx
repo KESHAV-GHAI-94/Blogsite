@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import blogge from "../../assets/blogge.png";
 import { Link } from "react-router-dom";
-
+import Cookies from "js-cookie";
 const Footer = () => {
+  const [Authenticate, setAuthenticate] = useState(false);
+  useEffect(() => {
+    const token = Cookies.get("authToken");
+    setAuthenticate(!!token);
+  }, []);
   return (
     <footer className="bg-[#6ca1eb]  px-18 py-4 text-white">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -26,11 +31,13 @@ const Footer = () => {
                 Posts
               </Link>
             </li>
+            {Authenticate && (
             <li>
               <Link to="/account/my-posts" className="hover:text-yellow-300">
                 My Posts
               </Link>
             </li>
+            )}
           </ul>
         </div>
         <div>

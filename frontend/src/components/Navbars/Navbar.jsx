@@ -78,6 +78,7 @@ const Navbar = () => {
                     My Posts
                   </button>
                 </Link>
+                <hr className="text-gray-300" />
                 <Link to="/account/create-post">
                   <button
                     onClick={() => {
@@ -88,7 +89,7 @@ const Navbar = () => {
                     Create Post
                   </button>
                 </Link>
-                <hr className="my-2" />
+                <hr className="text-gray-300" />
                 <button
                   onClick={() => {
                     Cookies.remove("authToken");

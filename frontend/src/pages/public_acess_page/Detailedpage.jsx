@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useDetailedpage } from "../../hooks/PublicAccess/useDetailedpage.js";
 import {MessageCircleMore,MessageCircleOff} from "lucide-react"; 
 const Detailedpage = () => {
-  const [showComments, setShowComments] = useState(true);
+  const [showComments, setShowComments] = useState(false);
   const {
     post,
     loading,
