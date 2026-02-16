@@ -100,7 +100,6 @@ const CommentItem = ({ comment, postId, fetchPost, currentUserId }) => {
   };
   return (
     <div className="mb-2 p-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 transition">
-
       <div className="flex gap-4  rounded-xl hover:bg-gray-50 transition">
         <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-sm font-semibold text-gray-600">
           {comment.commenter_name?.charAt(0).toUpperCase()}

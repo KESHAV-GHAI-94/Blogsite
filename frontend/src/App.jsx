@@ -29,8 +29,8 @@ const App = () => {
           <Route path="/account/my-posts" element={<Myposts />} />
           <Route path="/account/create-post" element={<Createpost />} />
         </Routes>
-      </div>
       <Footer />
+      </div>
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );

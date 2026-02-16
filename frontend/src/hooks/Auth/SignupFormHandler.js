@@ -19,26 +19,36 @@ export function SignupFormHandler() {
     cpassword: "",
   });
   const validateField = (name, value) => {
-    let error = "";
-    if (name === "name") {
-      if (!value.trim()) error = "Full Name is required";
-      else if (value.trim().length < 3)
-        error = "Name must be at least 3 characters";
-    }
-    if (name === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) error = "Invalid email format";
-    }
-    if (name === "password") {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-      if (!passwordRegex.test(value))
-        error = "8+ chars with upper, lower & number";
-    }
-    if (name === "cpassword") {
-      if (value !== form.password) error = "Passwords do not match";
-    }
-    setErrors((prev) => ({ ...prev, [name]: error }));
-  };
+  let error = "";
+  if (name === "name") {
+    if (!value.trim()) error = "Full Name is required";
+    else if (value.trim().length < 3)
+      error = "Name must be at least 3 characters";
+  }
+  if (name === "email") {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!value.trim()) error = "Email is required";
+    else if (!emailRegex.test(value))
+      error = "Invalid email format";
+  }
+  if (name === "password") {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!value) error = "Password is required";
+    else if (!passwordRegex.test(value))
+      error = "8+ chars with upper, lower & number";
+  }
+  if (name === "cpassword") {
+    if (!value) error = "Confirm Password required";
+    else if (value !== form.password)
+      error = "Passwords do not match";
+  }
+  setErrors((prev) => ({
+    ...prev,
+    [name]: error,
+  }));
+  return error;
+};
+
   const verifySignupOtp = async () => {
     if (!otp.trim()) return toast.error("Enter OTP");
     try {
@@ -60,49 +70,47 @@ export function SignupFormHandler() {
     }
   };
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-    if (touched[name]) {
-      validateField(name, value);
-    }
-  };
+  const { name, value } = e.target;
+  setForm((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+  if (touched[name]) {
+    validateField(name, value);
+  }
+};
+
   const handleBlur = (e) => {
     const { name, value } = e.target;
     setTouched((prev) => ({
       ...prev,
       [name]: true,
     }));
-    if (value.trim() !== "") {
-      validateField(name, value);
-    }
+    validateField(name, value);
   };
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-    let hasError = false;
-    Object.keys(form).forEach((key) => {
-      validateField(key, form[key]);
-      if (!form[key]) hasError = true;
+  e.preventDefault();
+  let hasError = false;
+  Object.keys(form).forEach((key) => {
+    const error = validateField(key, form[key]);
+    if (error) {
+      toast.error(error);
+      hasError = true;
+    }
+  });
+  if (hasError) return;
+  try {
+    const res = await axios.post("http://localhost:3000/sign-up", {
+      name: form.name,
+      email: form.email,
+      password: form.password,
     });
-    if (hasError) {
-      setLoading(false);
-      return;
-    }
-    try {
-      const res = await axios.post("http://localhost:3000/sign-up", {
-        name: form.name,
-        email: form.email,
-        password: form.password,
-      });
-      toast.success(res.data.message);
-      setShowOtpModal(true);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Signup failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+    toast.success(res.data.message);
+    setShowOtpModal(true);
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Signup failed");
+  }
+};
   return {
     showOtpModal,
     setOtp,
