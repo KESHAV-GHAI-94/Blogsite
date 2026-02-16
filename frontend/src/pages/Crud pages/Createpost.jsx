@@ -11,8 +11,8 @@ const Createpost = () => {
     handleSubmit,
   } = useCreatepost();
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center items-start pt-12">
-      <div className="bg-white w-full max-w-3xl rounded-3xl shadow-xl p-10">
+    <div className="min-h-screen bg-gray-50 flex justify-center  items-start pt-12">
+      <div className="bg-white w-full max-w-3xl rounded-3xl sm:mx-2 shadow-xl sm:p-5 p-10">
         <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">
           ✍️ Create New Blog
         </h1>

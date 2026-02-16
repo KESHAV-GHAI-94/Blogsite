@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const PostRouter = express.Router();
 const auth = require("../middlewares/auth");
-const {Postcreated,Viewposts,detailedpost} = require("../controllers/Postcontroller/postcontrol");
+const {Postcreated,Viewposts,detailedpost,getPosts} = require("../controllers/Postcontroller/postcontrol");
 const {likePost,unlikePost}= require("../controllers/Postcontroller/like-dislike")
 const {getCommentsByPost,addComment,addReply,deletecomment} = require("../controllers/Postcontroller/comments")
 const optionalauth = require("../middlewares/optionalauth")
@@ -11,7 +11,7 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }
 });
 
-PostRouter.get("/",Viewposts);
+PostRouter.get("/",getPosts);
 //api for opening post page 
 
 PostRouter.get("/post/:id",optionalauth,detailedpost);

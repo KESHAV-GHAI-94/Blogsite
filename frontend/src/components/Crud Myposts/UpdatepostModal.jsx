@@ -12,11 +12,11 @@ const UpdatepostModal = ({
   return (
     <div>
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm  flex items-center justify-center z-50 sm:px-2"
         onClick={() => setShowModal(false)}
       >
         <div
-          className="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-8 relative animate-scaleIn"
+          className="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto mx-2 sm:mx-0"
           onClick={(e) => e.stopPropagation()}
         >
           <button

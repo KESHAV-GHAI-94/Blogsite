@@ -10,16 +10,16 @@ const Cards = ({ post, view }) => {
         hover:shadow-xl hover:-translate-y-1 
         transition-all duration-300 overflow-hidden group
         flex flex-col
-        ${view === "list" ? "w-[800px] h-[200px] flex-row" : ""}`}
+        ${view === "list" ? "flex-row sm:flex-row w-full max-w-full sm:max-w-4xl sm:mx-auto" : ""}`}
       >
         {post.image_url && (
-          <div className={`relative ${view === "list" ? "w-2/6" : ""}`}>
+          <div className={`relative  ${view === "list" ? "w-2/6" : ""}`}>
             <img
               src={post.image_url}
               loading="lazy"
               alt={post.title}
               className={`w-full object-cover transition-all duration-500
-            ${view === "grid" ? "h-[220px]" : "h-full w-[250px]"}
+            ${view === "grid" ? "h-[220px]" : "h-full w-[200px] sm:h-full"}
             group-hover:scale-105`}
             />
             <div

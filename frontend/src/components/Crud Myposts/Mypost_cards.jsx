@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useMycard } from "../../hooks/ComponentHooks/useMycard";
 import UpdatepostModal from "./UpdatepostModal";
 import DeletepostModal from "./DeletepostModal";
+import { Trash2, Pencil} from "lucide-react";
 const Mypost_Cards = ({ post, view, refreshPosts }) => {
   const {
     showModal,
@@ -33,13 +34,13 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                 src={`data:image/jpeg;base64,${post.image_base64}`}
                 loading="lazy"
                 alt={post.title}
-                className={`w-full aspect-square object-cover transition-all duration-500
+                className={`w-full  object-cover transition-all duration-500
             ${view === "grid" ? "h-[300px] " : "h-full w-[250px]"}
             group-hover:scale-105`}
               />
             </div>
           )}
-          <div className="px-5 py-2 flex flex-row justify-between w-full">
+          <div className="px-5 mt-2 py-2 flex flex-row justify-between w-full">
             <div>
               <h2 className="text-lg font-bold text-gray-800 mb-2">
                 {post.title}
@@ -48,16 +49,15 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                 {view === "list" ? post.description : shortDesc}
               </p>
             </div>
-            <div className="flex gap-2 z-20">
+            <div className="flex p-1 gap-3 z-20">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setShowModal(true);
                 }}
-                className="bg-blue-500 text-white px-5 py-1 rounded-lg text-xs hover:bg-blue-600"
-              >
-                Edit
+                className="bg-blue-500 text-white px-6  rounded-lg text-xs hover:bg-blue-600"
+              ><Pencil />
               </button>
               <button
                 onClick={(e) => {
@@ -65,9 +65,8 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                   e.stopPropagation();
                   setShowDeleteModal(true);
                 }}
-                className="bg-red-500 text-white px-3 py-1 rounded-lg text-xs hover:bg-red-600"
-              >
-                Delete
+                className="bg-red-500 text-white px-4 py-1 rounded-lg text-xs hover:bg-red-600"
+              ><Trash2 />
               </button>
             </div>
           </div>
