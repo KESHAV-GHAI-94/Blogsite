@@ -1,7 +1,7 @@
 import React from "react";
-import { SignupFormHandler } from "../../hooks/AuthHook/SignupFormHandler";
+import { SignupFormHandler } from "../../hooks/Auth/SignupFormHandler";
 import { Link } from "react-router-dom";
-import SignupOtpModal from "../../components/Signup/SignupOtpModal";
+import OtpModal from "../../components/Modals/OtpModal";
 const Signup = () => {
   const {
     showOtpModal,
@@ -115,15 +115,18 @@ const Signup = () => {
           </div>
         </form>
         {showOtpModal && (
-          <SignupOtpModal
-            otp={otp}
-            setOtp={setOtp}
-            loadingOtp={loadingOtp}
-            verifySignupOtp={verifySignupOtp}
-            form={form}
-            setShowOtpModal={setShowOtpModal}
-          />
-        )}
+  <OtpModal
+    otp={otp}
+    setOtp={setOtp}
+    onVerify={verifySignupOtp}
+    onClose={() => setShowOtpModal(false)}
+    loading={loadingOtp}
+    email={form.email}
+    title="Verify Signup OTP"
+    buttonText="Verify OTP"
+  />
+)}
+
       </div>
     </>
   );

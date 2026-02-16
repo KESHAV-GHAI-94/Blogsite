@@ -1,4 +1,4 @@
-import { usePosts } from "../../hooks/PublicAccess/usePosts";
+import { usePosts } from "../../hooks/Page/usePosts";
 import { List, LayoutGrid,ChevronLeft,ChevronRight } from "lucide-react";
 import Cards from "../../components/Card section/Cards";
 const Posts = () => {

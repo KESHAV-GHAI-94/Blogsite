@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useCard } from "../../hooks/ComponentHooks/useCard";
+import { useCard } from "../../hooks/Cards/useCard";
 const Cards = ({ post, view }) => {
   const { shortDesc } = useCard(post);
   return (

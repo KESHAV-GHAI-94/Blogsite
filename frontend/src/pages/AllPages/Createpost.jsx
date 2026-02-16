@@ -1,4 +1,4 @@
-import { useCreatepost } from "../../hooks/CrudPosts/useCreatepost";
+import { useCreatepost } from "../../hooks/Page/useCreatepost";
 const Createpost = () => {
   const {
     title,

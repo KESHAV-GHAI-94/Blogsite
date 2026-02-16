@@ -1,5 +1,5 @@
-import Mypost_Cards from "../../components/Crud Myposts/Mypost_cards";
-import { useMyposts } from "../../hooks/CrudPosts/useMyposts";
+import Mypost_Cards from "../../components/Card section/Mypost_cards";
+import { useMyposts } from "../../hooks/Page/useMyposts";
 const Myposts = () => {
   const { posts, loading, error, fetchMyPosts } = useMyposts();
   if (loading) return <p className="text-center mt-10">Loading...</p>;

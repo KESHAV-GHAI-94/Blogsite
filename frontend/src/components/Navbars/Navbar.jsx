@@ -26,9 +26,19 @@ const Navbar = () => {
     };
   }, []);
   return (
-  <nav className="bg-linear-to-r from-blue-600 to-blue-500 shadow-lg px-4 md:px-8 py-3 h-20 flex items-center justify-between sticky top-0 z-50">
+  <nav className="bg-linear-to-r font-serif from-blue-600 to-blue-500
+  shadow-lg
+  px-3 sm:px-4 md:px-8
+  py-1 sm:py-2 md:py-3
+  h-14 sm:h-16 md:h-20
+  flex items-center justify-between
+  sticky top-0 z-50">
     <Link to="/">
-      <img src={blogge} className="bloggeimg" alt="logo" />
+      <img src={blogge} className=" h-15
+    md:h-20
+    lg:h-30
+    w-auto
+    object-contain" alt="logo" />
     </Link>
     <div className="hidden md:flex gap-10 text-white font-semibold">
       <Link to="/" className="hover:text-yellow-300">
@@ -154,19 +164,12 @@ const Navbar = () => {
                 Logout
               </button>
             </>
-
           )}
-
         </div>
-
       </div>
-
     )}
-
   </nav>
-
 );
-
 };
 
 export default Navbar;

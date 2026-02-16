@@ -1,4 +1,4 @@
-import { Changepass } from "../../../hooks/AuthHook/Forgetpass/Changepass";
+import { Changepass } from "../../../hooks/Auth/Forgetpass/Changepass";
 const ResetPassword = () => {
   const {
     email,

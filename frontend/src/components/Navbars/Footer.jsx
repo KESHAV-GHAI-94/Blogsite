@@ -9,7 +9,7 @@ const Footer = () => {
     setAuthenticate(!!token);
   }, []);
   return (
-    <footer className="bg-linear-to-r from-blue-600 to-blue-500 text-white px-4 sm:px-6 md:px-12 py-8">
+    <footer className="bg-linear-to-r font-serif from-blue-600 to-blue-500 text-white px-4 sm:px-6 md:px-12 py-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <img src={blogge} alt="logo" className="h-18 mb-4" />

@@ -1,5 +1,5 @@
 import React from "react";
-import { LoginHandler } from "../../hooks/AuthHook/LoginHandler";
+import { LoginHandler } from "../../hooks/Auth/LoginHandler";
 import { Link } from "react-router-dom";
 const Login = () => {
   const {

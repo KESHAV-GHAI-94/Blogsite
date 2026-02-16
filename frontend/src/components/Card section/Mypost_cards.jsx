@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useMycard } from "../../hooks/ComponentHooks/useMycard";
-import UpdatepostModal from "./UpdatepostModal";
-import DeletepostModal from "./DeletepostModal";
+import { useMycard } from "../../hooks/Cards/useMycard";
+import UpdatepostModal from "../Modals/UpdatepostModal";
+import DeletepostModal from "../Modals/DeletepostModal";
 import { Trash2, Pencil} from "lucide-react";
 const Mypost_Cards = ({ post, view, refreshPosts }) => {
   const {

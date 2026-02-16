@@ -14,21 +14,33 @@ export function LoginHandler() {
   const [loading, setLoading] = useState(false);
   const validateField = (name, value) => {
     let error = "";
+    const trimmedValue = value.trim();
     if (name === "email") {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!value) error = "Email is required";
-      else if (!emailRegex.test(value)) error = "Invalid email format";
+      if (!trimmedValue) {
+        error = "Email is required";
+      } else if (!emailRegex.test(trimmedValue)) {
+        error = "Invalid email format";
+      }
     }
     if (name === "password") {
-      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-      if (!passwordRegex.test(value))
-        error = "8+ chars with upper, lower & number";
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!trimmedValue) {
+        error = "Password is required";
+      } else if (!passwordRegex.test(trimmedValue)) {
+        error =
+          "Password must be 8+ chars with upper, lower & number";
+      }
     }
     return error;
   };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
     if (touched[name]) {
       const error = validateField(name, value);
       setErrors((prev) => ({
@@ -38,27 +50,43 @@ export function LoginHandler() {
     }
   };
   const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setTouched((prev) => ({
-      ...prev,
-      [name]: true,
-    }));
+  const { name, value } = e.target;
+  setTouched((prev) => ({
+    ...prev,
+    [name]: true,
+  }));
+  if (value.trim() !== "") {
     const error = validateField(name, value);
     setErrors((prev) => ({
       ...prev,
       [name]: error,
     }));
-  };
+  }
+};
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
+    const allTouched = {};
+    Object.keys(form).forEach((key) => {
+      allTouched[key] = true;
+    });
+    setTouched(allTouched);
     let newErrors = {};
     Object.keys(form).forEach((key) => {
       const error = validateField(key, form[key]);
       if (error) newErrors[key] = error;
     });
+    if (Object.keys(newErrors).length > 0) {
+    Object.values(newErrors).forEach((error) => {
+      toast.error(error);
+    });
+    return;
+  }
     setErrors(newErrors);
-    if (Object.keys(newErrors).length > 0) return;
+    if (Object.keys(newErrors).length > 0) {
+      toast.error("Please fix validation errors");
+      return;
+    }
     try {
       setLoading(true);
       const res = await axios.post(

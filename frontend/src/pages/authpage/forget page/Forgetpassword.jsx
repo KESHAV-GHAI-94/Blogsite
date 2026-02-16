@@ -1,5 +1,6 @@
-import { ForgetpassHandler } from "../../../hooks/AuthHook/Forgetpass/ForgetpassHandler";
-import ForgetpassOtpModal from "../../../components/Forgetpass/ForgetpassOtpModal";
+import { ForgetpassHandler } from "../../../hooks/Auth/Forgetpass/ForgetpassHandler";
+import OtpModal from "../../../components/Modals/OtpModal";
+
 const ForgetPassword = () => {
   const {
     email,
@@ -12,11 +13,13 @@ const ForgetPassword = () => {
     sendOtp,
     verifyOtp,
   } = ForgetpassHandler();
+
   return (
     <div className="flex justify-center items-center min-h-screen">
+
       <form
         onSubmit={sendOtp}
-        className="w-96 p-8 bg-white rounded-2xl shadow-xl border border-gray-100"
+        className="w-full max-w-[400px] p-6 sm:p-8 bg-white rounded-2xl shadow-xl border border-gray-100"
       >
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
           Forgot Password
@@ -28,31 +31,37 @@ const ForgetPassword = () => {
           <input
             type="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-3 rounded-lg border border-gray-300
-                focus:outline-none focus:ring-2 focus:ring-blue-400
-              focus:border-blue-400 transition duration-200"
+            className="
+              w-full px-4 py-3 rounded-lg border border-gray-300
+              focus:outline-none focus:ring-2 focus:ring-blue-400
+            "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <button
           disabled={loading}
-          className={`w-full py-3 rounded-lg font-semibold text-white transition duration-200
-      ${
-        loading
-          ? "bg-gray-400 cursor-not-allowed"
-          : "bg-blue-500 hover:bg-blue-600 active:scale-95"
-      }`}
+          className={`w-full py-3 rounded-lg font-semibold text-white transition
+            ${
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600 active:scale-95"
+            }
+          `}
         >
           {loading ? "Sending..." : "Send OTP"}
         </button>
       </form>
       {showModal && (
-        <ForgetpassOtpModal
+        <OtpModal
           otp={otp}
           setOtp={setOtp}
-          setShowModal={setShowModal}
-          verifyOtp={verifyOtp}
+          onVerify={verifyOtp}
+          onClose={() => setShowModal(false)}
+          loading={loading}
+          email={email}
+          title="Verify Reset OTP"
+          buttonText="Verify OTP"
         />
       )}
     </div>
