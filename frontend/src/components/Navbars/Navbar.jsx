@@ -109,8 +109,8 @@ const Navbar = () => {
       {mobileOpen ? <X size={28}/> : <Menu size={28}/>}
     </button>
     {mobileOpen && (
-      <div className="absolute top-20 left-0 w-full bg-white shadow-lg md:hidden">
-        <div className="flex flex-col p-4 gap-4">
+      <div className="absolute top-13  right-2 w-40 rounded bg-white shadow-lg md:hidden">
+        <div className="flex flex-col p-2 gap-2">
           <Link to="/" onClick={() => setMobileOpen(false)}>
             Home
           </Link>

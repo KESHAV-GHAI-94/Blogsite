@@ -18,7 +18,7 @@ const Detailedpage = () => {
   if (error) return <h2 className="text-center mt-10 text-red-500">{error}</h2>;
   if (!post) return <h2 className="text-center mt-10">Post not found</h2>;
   return (
-  <div className=" bg-gray-100  pt-10 pb-20 p-1 flex justify-center items-start ">
+  <div className=" bg-gray-100  pt-10 pb-10 p-1 flex justify-center items-start ">
     <div className="w-full p-3 flex-col max-w-md sm:max-w-lg md:max-w-xl bg-white rounded-3xl shadow-lg overflow-hidden">
       <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
   {post.image_base64 && (
@@ -29,15 +29,17 @@ const Detailedpage = () => {
     />
   )}
 </div>
-      <div className="pt-6 pb-6 px-5 text-center">
+      <div className="pt-6 pb-6 px-2 text-left">
+        <div className="flex items-center justify-between gap-2">
         <h1 className="text-2xl font-bold text-gray-900">
           {post.title}
         </h1>
-        <p className="text-gray-500 mb-2 text-sm mt-1">
-          ~{post.author_name}
-        </p>
-        <p className="text-gray-400 text-xs mb-4">
+        <p className="text-gray-400 text-xs">
           {new Date(post.created_at).toLocaleDateString()}
+        </p>
+        </div>
+        <p className="text-gray-500 mb-5  text-sm ">
+          ~{post.author_name}
         </p>
         <p className="text-gray-600 text-sm leading-relaxed px-2">
           {post.description}
@@ -65,7 +67,7 @@ const Detailedpage = () => {
         </div>
       </div>
         {showComments && (
-          <div className="border-t bg-gray-50 p-4">
+          <div className="border-t bg-gray-50 p-1">
             <Comments
               postId={post.id}
               comments={comments}
@@ -77,6 +79,5 @@ const Detailedpage = () => {
     </div>
   </div>
 );
-
 };
 export default Detailedpage;

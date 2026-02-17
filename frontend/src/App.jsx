@@ -13,6 +13,7 @@ import Detailedpage from "./pages/AllPages/Detailedpage";
 import Myposts from "./pages/AllPages/Myposts";
 import Footer from "./components/Navbars/Footer";
 import Createpost from "./pages/AllPages/Createpost";
+import ProtectedRoute from "./routes/Protectedroute";
 const App = () => {
   return (
     <div>
@@ -26,8 +27,10 @@ const App = () => {
           <Route path="/login/reset-password" element={<ResetPassword />} />
           <Route path="/login/forget-password" element={<Forgetpassword />} />
           <Route path="/posts/post/:id" element={<Detailedpage />} />
-          <Route path="/account/my-posts" element={<Myposts />} />
-          <Route path="/account/create-post" element={<Createpost />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/account/my-posts" element={<Myposts />} />
+            <Route path="/account/create-post" element={<Createpost />} />
+          </Route>
         </Routes>
       <Footer />
       </div>

@@ -38,7 +38,7 @@ const Cards = ({ post, view }) => {
               {post.title}
             </h2>
             <p className="text-gray-500 text-sm">
-              {view === "list" ? post.description : shortDesc}
+              {view === "list" ? shortDesc : shortDesc}
             </p>
           </div>
         </div>
