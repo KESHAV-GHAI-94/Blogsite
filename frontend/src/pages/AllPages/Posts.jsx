@@ -5,15 +5,16 @@ const Posts = () => {
   const { view, setView, posts, loading, error,page, setPage, totalPages } = usePosts();
   if (loading)
     return (
-      <div className="grid grid-cols-3 gap-6 mt-10">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="h-60 bg-gray-200 animate-pulse rounded-2xl"
-          ></div>
-        ))}
-      </div>
-    );
+  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-20 mt-25 px-4 lg:px-50 mt-10">
+    {[...Array(8)].map((_, i) => (
+      <div
+        key={i}
+        className="h-60 bg-gray-200 animate-pulse rounded-2xl w-full"
+      ></div>
+    ))}
+  </div>
+);
+
   if (error) return <h2 className="text-center mt-10 text-red-500">{error}</h2>;
   return (
     <div className="max-w-7xl   mx-auto mt-10 px-4 mb-30">

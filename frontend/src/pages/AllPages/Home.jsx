@@ -1,7 +1,9 @@
 import React from "react";
 import imagbloghero from "../../assets/imagbloghero.png";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 const Home = () => {
+  const token = Cookies.get("authToken");
   return (
     <div
       className="h-screen w-full bg-center bg-cover relative flex items-center justify-center"
@@ -16,9 +18,9 @@ const Home = () => {
           Share your thoughts, ideas and stories with the world.
         </p>
         <div className="flex justify-center gap-6 flex-wrap">
-          <Link to="/sign-up">
+          <Link to={token ? "/account/create-post" : "/sign-up"}>
             <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 transition rounded-full text-white font-semibold shadow-lg">
-              Start Blogging
+              {token ? "Create Your Post" : "Start Blogging"}
             </button>
           </Link>
           <Link to="/posts">

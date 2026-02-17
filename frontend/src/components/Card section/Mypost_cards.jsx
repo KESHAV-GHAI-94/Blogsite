@@ -49,14 +49,14 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                 {view === "list" ? post.description : shortDesc}
               </p>
             </div>
-            <div className="flex p-1 gap-3 z-20">
+            <div className="flex items-center gap-3 z-20">
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
                   setShowModal(true);
                 }}
-                className="bg-blue-500 text-white px-6  rounded-lg text-xs hover:bg-blue-600"
+                className="flex items-center justify-center w-11 h-11 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition"
               ><Pencil />
               </button>
               <button
@@ -65,7 +65,7 @@ const Mypost_Cards = ({ post, view, refreshPosts }) => {
                   e.stopPropagation();
                   setShowDeleteModal(true);
                 }}
-                className="bg-red-500 text-white px-4 py-1 rounded-lg text-xs hover:bg-red-600"
+                className="flex items-center justify-center w-11 h-11 bg-red-500 text-white rounded-xl hover:bg-red-600 transition"
               ><Trash2 />
               </button>
             </div>
